@@ -15,27 +15,40 @@ discordClient.on('ready', () => {
 });
 
 discordClient.on('message', m => {
-  if ((m.cleanContent.startsWith('@' + discordClient.user.username) || m.channel.type === 'dm') && discordClient.user.id !== m.author.id) {
-    const message = remove(discordClient.user.username, m.cleanContent);
-
-    const dialogflowRequest = {
-      session: sessionPath,
-      queryInput: {
-        text: {
-          text: message,
-          languageCode: 'en-US'
-        }
-      }
-    };
-
-    dialogflowClient.detectIntent(dialogflowRequest).then(responses => {
-      m.reply(responses[0].queryResult.fulfillmentText);
-    });
+  if (!shouldBeInvoked(m)) {
+    return;
   }
+
+  const message = remove(discordClient.user.username, m.cleanContent);
+
+  if (message === 'help') {
+    return m.channel.send(process.env.DISCORD_HELP_MESSAGE);
+  }
+
+  const dialogflowRequest = {
+    session: sessionPath,
+    queryInput: {
+      text: {
+        text: message,
+        languageCode: 'en-US'
+      }
+    }
+  };
+
+  dialogflowClient.detectIntent(dialogflowRequest).then(responses => {
+    m.channel.send(responses[0].queryResult.fulfillmentText);
+  });
 });
 
+function shouldBeInvoked(message) {
+  return (message.content.startsWith(process.env.DISCORD_PREFIX) ||
+          message.content.startsWith('@' + discordClient.user.username) ||
+          message.channel.type === 'dm') &&
+         discordClient.user.id !== message.author.id;
+}
+
 function remove(username, text) {
-  return text.replace('@' + username + ' ', '');
+  return text.replace('@' + username + ' ', '').replace(process.env.DISCORD_PREFIX + ' ', '');
 }
 
 discordClient.login(process.env.DISCORD_TOKEN);
