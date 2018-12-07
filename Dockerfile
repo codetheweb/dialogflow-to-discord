@@ -10,4 +10,4 @@ COPY . .
 
 ENV GOOGLE_APPLICATION_CREDENTIALS=/usr/data/keys.json
 
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
