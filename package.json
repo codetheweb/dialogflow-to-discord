@@ -1,0 +1,21 @@
+{
+  "name": "dialogflow-to-discord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo"
+  },
+  "author": "Max Isom <codetheweb@icloud.com> (https://maxisom.me)",
+  "license": "ISC",
+  "dependencies": {
+    "dialogflow": "^0.7.0",
+    "discord.js": "^11.4.2"
+  },
+  "devDependencies": {
+    "xo": "^0.23.0"
+  },
+  "xo": {
+    "space": "true"
+  }
+}
