@@ -11,3 +11,7 @@ You'll need to set 3 environment variables:
 - `DISCORD_TOKEN` should be set to your bot's token
 
 Then, just run `node index.js`.
+
+## Docker
+
+Set `PROJECT_ID` and `DISCORD_TOKEN`, then mount a directory containing the Google Cloud `keys.json` file to `/usr/data/` as a volume. 
